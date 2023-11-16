@@ -1,10 +1,13 @@
 'use client'
-
-
-
 import { useEffect, useState } from 'react'
 
-export const useFetch = (url:string)=> {
+interface UseFetchResponse {
+  data: {quizzes:[title: string]};
+  pending: boolean;
+  error: string | null;
+}
+
+export const useFetch = (url:string):UseFetchResponse=> {
   const [data, setData] = useState(null)
   const [pending, setPending] = useState(true)
   const [error, setError] = useState(null)

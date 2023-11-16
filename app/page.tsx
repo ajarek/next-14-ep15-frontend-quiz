@@ -1,14 +1,24 @@
 'use client'
-import useFetch from "@/lib/getQuiz";
-import type {Data} from "@/types/data";
+import Loading from '@/components/Loading'
+import useFetch from '@/lib/getQuiz'
 
-export default function Home() {
-  const { data } =  useFetch("data.json");
+const Home = () => {
+  const { data, pending, error } = useFetch('data.json')
+  if (pending) {
+    return <Loading/>
+  }
 
+  if (error) {
+    return <p>Error: {error}</p>
+  }
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className='flex min-h-screen flex-col items-center justify-between p-24'>
       {data &&
-        [...data.quizzes].map((el, index) => <p key={index}>{el.title}</p>)}
+        [...data.quizzes].map((el: any, index) => (
+          <p key={index}>{el.title}</p>
+        ))}
     </main>
-  );
+  )
 }
+
+export default Home
