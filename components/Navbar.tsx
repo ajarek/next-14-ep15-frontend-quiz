@@ -10,7 +10,7 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
-
+import { ModeToggle } from './ui/toggle-mode'
 
 
 const Navbar = () => {
@@ -19,7 +19,7 @@ const Navbar = () => {
     <NavigationMenuItem className='list-none'>
    
       <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-        Documentation
+      <ModeToggle />
       </NavigationMenuLink>
    
   </NavigationMenuItem>
