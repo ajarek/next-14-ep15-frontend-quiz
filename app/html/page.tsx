@@ -8,6 +8,7 @@ const Html = () => {
   const { data, pending, error } = useFetch('data.json')
   const [numberQuestion, setNumberQuestion] = useState(0)
   const [letters, setLetters] = useState(['A', 'B', 'C', 'D'])
+  const [collectedAnswers, setCollectedAnswers] = useState(0)
 
   if (pending) {
     return <Loading />
@@ -23,8 +24,12 @@ const Html = () => {
 
  const handleSubmit=(e:any)=>{
   e.preventDefault()
-  console.log(e);
-  
+  const ok=[...e.target].filter(el=>el.checked===true)
+  if(ok[0].value===answer){
+    setCollectedAnswers(collectedAnswers+1)
+  }
+ 
+  setNumberQuestion(numberQuestion+1)
  }
 
   return (
@@ -38,12 +43,14 @@ const Html = () => {
             height={50}
             className='mr-4'
           />
-          HTML
+          HTML 
+          
         </h1>
         <p className='mt-8 text-xl italic'>
           Question {numberQuestion + 1} of {questions.length}
         </p>
         <h2 className='text-4xl font-bold '>{question}</h2>
+        <h3 className='text-2xl '>Your Points: {collectedAnswers}</h3>
       </div>
       <form onSubmit={handleSubmit} className='w-full min-h-full flex flex-col items-center gap-8 justify-center border p-4'>
         {options.map((el: string, index: number) => (
@@ -54,8 +61,10 @@ const Html = () => {
             <input
               type='radio'
               name='radio'
+              value={el}
               id={letters[index]}
               className='w-6 h-6'
+              required
             />
             <label
               htmlFor={letters[index]}
