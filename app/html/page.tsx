@@ -8,8 +8,8 @@ const Html = () => {
   const { data, pending, error } = useFetch('data.json')
   const [numberQuestion, setNumberQuestion] = useState(0)
   const [letters, setLetters] = useState(['A', 'B', 'C', 'D'])
-  const [collectedAnswers, setCollectedAnswers] = useState(0)
-
+  const [collectedAnswers, setCollectedAnswers] = useState<boolean[]>([])
+  const result=collectedAnswers.filter(el=>el===true)
   if (pending) {
     return <Loading />
   }
@@ -26,16 +26,19 @@ const Html = () => {
   e.preventDefault()
   const ok=[...e.target].filter(el=>el.checked===true)
   if(ok[0].value===answer){
-    setCollectedAnswers(collectedAnswers+1)
+    collectedAnswers.length>=10?setCollectedAnswers([...collectedAnswers]):setCollectedAnswers([...collectedAnswers,true])
+  }
+  else{
+    setCollectedAnswers([...collectedAnswers,false])
   }
  
-  setNumberQuestion(numberQuestion+1)
+  numberQuestion===9?setNumberQuestion(9):setNumberQuestion(numberQuestion+1)
  }
 
   return (
-    <main className=' min-h-screen -mt-20  p-24 grid grid-cols-2 place-items-center  '>
+    <main className=' min-h-screen -mt-20  p-24 grid grid-cols-2 place-items-center max-[800px]:grid-cols-1 max-[800px]:px-4  '>
       <div className='w-full flex flex-col items-start '>
-        <h1 className=' flex text-4xl'>
+        <h1 className=' flex text-4xl max-[800px]:text-2xl'>
           <Image
             src={icon}
             alt={'icon '}
@@ -49,8 +52,8 @@ const Html = () => {
         <p className='mt-8 text-xl italic'>
           Question {numberQuestion + 1} of {questions.length}
         </p>
-        <h2 className='text-4xl font-bold '>{question}</h2>
-        <h3 className='text-2xl '>Your Points: {collectedAnswers}</h3>
+        <h2 className='text-4xl font-bold max-[800px]:text-2xl '>{question}</h2>
+        <h3 className='text-2xl '>Your Points: {result.length}</h3>
       </div>
       <form onSubmit={handleSubmit} className='w-full min-h-full flex flex-col items-center gap-8 justify-center border p-4'>
         {options.map((el: string, index: number) => (
